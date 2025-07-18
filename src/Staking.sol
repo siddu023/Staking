@@ -20,36 +20,35 @@ contract Staking is Ownable {
     error InsufficientBalance();
 
     constructor(address _stakingToken, address _rewardDistributor) Ownable(msg.sender) {
-        if(_stakingToken == address(0) || _rewardDistributor == address(0)) revert ZeroAmount();
+        if (_stakingToken == address(0) || _rewardDistributor == address(0)) revert ZeroAmount();
         stakingToken = IERC20(_stakingToken);
         rewardDistributor = IRewardDistributor(_rewardDistributor);
     }
 
     function stake(uint256 amount) external {
-        if(amount == 0) revert ZeroAmount();
+        if (amount == 0) revert ZeroAmount();
 
         rewardDistributor.updatedRewards(msg.sender);
 
-        stakingToken.transferFrom(msg.sender,address(this),amount);
+        stakingToken.transferFrom(msg.sender, address(this), amount);
         balances[msg.sender] += amount;
         totalSupply += amount;
 
-        rewardDistributor.updateUserBalance(msg.sender,balances[msg.sender]);
-        emit Staked(msg.sender,amount);
-
+        rewardDistributor.updateUserBalance(msg.sender, balances[msg.sender]);
+        emit Staked(msg.sender, amount);
     }
 
     function withdraw(uint256 amount) external {
-        if(amount == 0) revert ZeroAmount();
-        if(balances[msg.sender] < amount) revert InsufficientBalance();
+        if (amount == 0) revert ZeroAmount();
+        if (balances[msg.sender] < amount) revert InsufficientBalance();
 
         rewardDistributor.updatedRewards(msg.sender);
 
-        balances[msg.sender]-= amount;
+        balances[msg.sender] -= amount;
         totalSupply -= amount;
-        stakingToken.transfer(msg.sender,amount);
+        stakingToken.transfer(msg.sender, amount);
 
-        rewardDistributor.updateUserBalance(msg.sender,balances[msg.sender]);
+        rewardDistributor.updateUserBalance(msg.sender, balances[msg.sender]);
         emit Withdrawn(msg.sender, amount);
     }
 

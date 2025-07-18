@@ -41,10 +41,7 @@ contract RewardDistributor is IRewardDistributor, Ownable {
         staking = _staking;
     }
 
-    function updateUserBalance(
-        address user,
-        uint256 balance
-    ) external override onlyStaking {
+    function updateUserBalance(address user, uint256 balance) external override onlyStaking {
         _updateReward(user);
         balances[user] = balance;
     }
@@ -65,10 +62,7 @@ contract RewardDistributor is IRewardDistributor, Ownable {
 
     function rewardPerToken() public view returns (uint256) {
         if (totalSupply() == 0) return rewardPerTokenStored;
-        return
-            rewardPerTokenStored +
-            (rewardRate * (block.timestamp - lastUpdate) * 1e18) /
-            totalSupply();
+        return rewardPerTokenStored + (rewardRate * (block.timestamp - lastUpdate) * 1e18) / totalSupply();
     }
 
     function totalSupply() public view returns (uint256 supply) {
@@ -76,15 +70,10 @@ contract RewardDistributor is IRewardDistributor, Ownable {
     }
 
     function earned(address user) public view returns (uint256) {
-        return
-            (balances[user] * (rewardPerToken() - userRewardPerTokenPaid[user])) /
-            1e18 +
-            rewards[user];
+        return (balances[user] * (rewardPerToken() - userRewardPerTokenPaid[user])) / 1e18 + rewards[user];
     }
 
-    function claimRewards(
-        address user
-    ) external override onlyStaking returns (uint256) {
+    function claimRewards(address user) external override onlyStaking returns (uint256) {
         _updateReward(user);
         uint256 reward = rewards[user];
         if (reward > 0) {
@@ -95,10 +84,7 @@ contract RewardDistributor is IRewardDistributor, Ownable {
         return reward;
     }
 
-    function notifyRewardAmount(
-        uint256 amount,
-        uint256 duration
-    ) external onlyOwner {
+    function notifyRewardAmount(uint256 amount, uint256 duration) external onlyOwner {
         rewardRate = amount / duration;
         lastUpdate = block.timestamp;
         rewardPerTokenStored = rewardPerToken();
