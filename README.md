@@ -1,66 +1,129 @@
-## Foundry
+# Staking & Reward Distribution Protocol
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This repository contains a **production-ready staking and reward distribution protocol** implemented in Solidity. It is designed to provide users the ability to stake ERC20 tokens and earn rewards distributed proportionally over time.
 
-Foundry consists of:
+---
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## 🚀 Project Overview
 
-## Documentation
+This project implements the core smart contracts for a staking protocol where users can:
 
-https://book.getfoundry.sh/
+- Stake ERC20 tokens (e.g., LP tokens or other staking tokens).
+- Accrue rewards over time based on their stake amount and duration.
+- Claim their earned rewards securely.
 
-## Usage
+The reward distribution mechanism uses a **reward rate** and tracks per-user accrued rewards efficiently, ensuring gas optimization and fairness.
 
-### Build
+---
 
-```shell
-$ forge build
-```
+## 📂 Repository Structure
 
-### Test
+```text
+.
+├── src/
+│   ├── RewardDistributor.sol       # Core reward distribution contract
+│   ├── Staking.sol                 # Staking contract managing stakes and balances
+│   ├── mocks/
+│   │   └── MockERC20Token.sol      # Mock ERC20 token for testing
+├── test/
+│   ├── RewardDistribution.t.sol   # Test suite for reward distribution contract
+│   ├── Staking.t.sol              # Test suite for staking contract
+├── script/
+│   └── Deploy.s.sol               # Deployment script for contracts
+├── foundry.toml                   # Foundry configuration
+└── README.md                     # This file
+⚙️ Key Contracts
+RewardDistributor.sol
+Handles calculation and distribution of rewards to stakers based on staking balances and reward rate. It integrates with the Staking contract to get user balances and updates rewards on stake/unstake actions.
 
-```shell
-$ forge test
-```
+Staking.sol
+Manages staking and unstaking of ERC20 tokens by users, maintains balances, and interacts with RewardDistributor to update rewards accordingly.
 
-### Format
+MockERC20Token.sol
+ERC20 token used for local testing to simulate staking and reward tokens.
 
-```shell
-$ forge fmt
-```
+📖 Features
+Stake and unstake ERC20 tokens with balance tracking.
 
-### Gas Snapshots
+Proportional reward distribution with real-time accrual.
 
-```shell
-$ forge snapshot
-```
+Secure reward claiming.
 
-### Anvil
+Access control with OpenZeppelin’s Ownable.
 
-```shell
-$ anvil
-```
+Gas optimized reward calculations using stored variables.
 
-### Deploy
+Comprehensive unit tests with Foundry.
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+🛠 Development Setup
+Clone the repository:
 
-### Cast
+bash
+Copy code
+git clone https://github.com/yourusername/staking-reward-protocol.git
+cd staking-reward-protocol
+Install Foundry (if not already installed):
 
-```shell
-$ cast <subcommand>
-```
+bash
+Copy code
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+Run tests:
 
-### Help
+bash
+Copy code
+forge test
+🔍 Testing
+The project includes unit tests covering:
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Stake and unstake flows.
+
+Reward accrual over simulated time.
+
+Reward claiming logic.
+
+Edge cases like zero stake or claim without staking.
+
+Run all tests with:
+
+bash
+Copy code
+forge test
+📝 Usage
+Deploy the staking token and reward token (can use MockERC20Token for tests).
+
+Deploy the RewardDistributor contract with the reward token address.
+
+Deploy the Staking contract with the staking token and reward distributor addresses.
+
+Users can stake tokens via the Staking contract.
+
+Rewards accrue automatically and can be claimed through the Staking contract, which interacts with RewardDistributor.
+
+📚 Learning Outcomes
+By studying this project, you will learn:
+
+Building production-grade staking and reward contracts.
+
+Efficient reward calculation algorithms.
+
+Secure contract design with OpenZeppelin.
+
+Integration patterns between staking and reward distribution.
+
+Writing comprehensive test suites in Foundry.
+
+🤝 Contributions
+Contributions and improvements are welcome! Please open issues or submit pull requests.
+
+⚖️ License
+This project is licensed under the MIT License.
+
+Author
+Sai Siddush Thungathurthy
+
+Email: thungasaisiddush@gmail.com
+
+GitHub: github.com/thungasaisiddush
+
+Thank you for visiting the project! 🚀
