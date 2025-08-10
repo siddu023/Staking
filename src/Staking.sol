@@ -28,7 +28,7 @@ contract Staking is Ownable {
     function stake(uint256 amount) external {
         if (amount == 0) revert ZeroAmount();
 
-        rewardDistributor.updatedRewards(msg.sender);
+        rewardDistributor.updateRewards(msg.sender);
 
         stakingToken.transferFrom(msg.sender, address(this), amount);
         balances[msg.sender] += amount;
@@ -42,7 +42,7 @@ contract Staking is Ownable {
         if (amount == 0) revert ZeroAmount();
         if (balances[msg.sender] < amount) revert InsufficientBalance();
 
-        rewardDistributor.updatedRewards(msg.sender);
+        rewardDistributor.updateRewards(msg.sender);
 
         balances[msg.sender] -= amount;
         totalSupply -= amount;
